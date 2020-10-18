@@ -3,19 +3,19 @@ from marshmallow import Schema
 import redis
 
 
-
-
-
-class RedisListToPythonNative():
+class RedisListToPythonNative:
     """
-    This handles the retrieval of  
+    This handles the retrieval of
     """
-    def __init__(self, redis_list, booking_list=None, deserializer=None, connection=None):
+
+    def __init__(
+        self, redis_list, booking_list=None, deserializer=None, connection=None
+    ):
         self.booking_list = booking_list or []
         self.deserializer = deserializer
         self.redis_list = redis_list
         self.connection = connection
-        
+
     def connect(self):
         """
         Makes a redis connection
@@ -37,18 +37,19 @@ class RedisListToPythonNative():
                 _booking = to_native(_booking).values()
             self.booking_list.append(_booking)
 
-
     def deserializer_check(self):
         """
         Deserializers needs to be a marshmallow.Schema Instance
         """
         if not isinstance(self.deserializer, Schema):
             raise TypeError("deserializer needs to be a marshamallow.Schema instance")
-    
+
     def to_native(self, data):
         """
-        Converts the values of (json string) from string to a tuple of 
-        python native data types to be used with psychopg2 for 
-        insertions into database. 
+        Converts the values of (json string) from string to a tuple of
+        python native data types to be used with psychopg2 for
+        insertions into database.
         """
-        return self.deserialzer.loads(json.loads(data.decode().replace("'", '"'))).values()
+        return self.deserialzer.loads(
+            json.loads(data.decode().replace("'", '"'))
+        ).values()

@@ -1,10 +1,12 @@
 from marshmallow import Schema, fields
 
+
 class BookingSchema(Schema):
     """
-    Schema that handles the serialization 
+    Schema that handles the serialization
     and deserialilzation of Booking instances.
     """
+
     booking_id = fields.UUID()
     user_id = fields.UUID()
     vehicle_model_id = fields.Integer()
@@ -24,7 +26,6 @@ class BookingSchema(Schema):
     to_lat = fields.Decimal()
     to_long = fields.Decimal()
     car_cancellation = fields.Boolean()
-
 
 
 booking_serializer = BookingSchema()

@@ -4,8 +4,9 @@ from django.db import models
 class BookingModel(models.Model):
     """
     Model that deals with the cab bookings
-    NOTE: All the fields with _id 
+    NOTE: All the fields with _id
     """
+
     booking_id = models.UUIDField(primary_key=True)
     user_id = models.UUIDField()
     vehicle_model_id = models.IntegerField()
@@ -20,7 +21,7 @@ class BookingModel(models.Model):
     online_booking = models.BooleanField()
     mobile_site_booking = models.BooleanField()
     booking_created = models.DateTimeField()
-    from_lat = models.DecimalField(max_digits=8, decimal_places=5) 
+    from_lat = models.DecimalField(max_digits=8, decimal_places=5)
     from_long = models.DecimalField(max_digits=8, decimal_places=5)
     to_lat = models.DecimalField(max_digits=8, decimal_places=5)
     to_long = models.DecimalField(max_digits=8, decimal_places=5)
