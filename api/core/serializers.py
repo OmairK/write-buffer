@@ -12,6 +12,7 @@ class BookingSchema(Schema):
     from_area_id = fields.Integer()
     to_area_id = fields.Integer()
     to_date = fields.NaiveDateTime()
+    from_date = fields.NaiveDateTime()
     online_booking = fields.Boolean()
     mobile_site_booking = fields.Boolean()
     booking_created = fields.Boolean()

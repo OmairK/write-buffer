@@ -6,11 +6,11 @@ class BookingModel(models.Model):
     Model that deals with the cab bookings
     NOTE: All the fields with _id 
     """
-    booking_id = models.UUID(primary=True)
-    user_id = models.UUID()
+    booking_id = models.UUIDField(primary_key=True)
+    user_id = models.UUIDField()
     vehicle_model_id = models.IntegerField()
-    package_id = models.ChoiceField()
-    travel_type_id = models.ChoiceField()
+    package_id = models.CharField(max_length=2)
+    travel_type_id = models.CharField(max_length=2)
     from_area_id = models.IntegerField()
     to_area_id = models.IntegerField()
     from_city_id = models.IntegerField()
