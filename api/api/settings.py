@@ -93,8 +93,8 @@ DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql_psycopg2",
         "NAME":"locale_task",
-        "USER": "postgres",
-        "PASSWORD": "postgres",
+        "USER": "locale_test",
+        "PASSWORD": "locale-test",
         "HOST": "127.0.0.1",
         "PORT": 5432,
     }
