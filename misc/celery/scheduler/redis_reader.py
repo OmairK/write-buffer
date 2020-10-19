@@ -1,11 +1,17 @@
-from datedatime import datetime
+from datetime import datetime
+import json
 import logging
 import os
 
 import redis
-import json
 
-READ_BUFFER = os.environ.get("REDIS_RB", 500)
+from connection import RedisConn
+
+
+## Move to seperate utils settings
+READ_BUFFER = os.environ.get("REDIS_READ_BUFFER", 500)
+REDIS_HOST = os.environ.get("REDIS_HOST", "127.0.0.1")
+REDIS_PORT = os.environ.get("REDIS_PORT", 6379)
 
 
 class RedisListToPythonNative:
@@ -13,28 +19,19 @@ class RedisListToPythonNative:
     This handles the retrieval of redis list element
     """
 
-    def __init__(
-        self, redis_list, booking_list=None, redis_host="127.0.0.1", redis_port=6379
-    ):
+    def __init__(self, redis_list, booking_list=None):
         self.booking_list = booking_list or []
         self.redis_list = redis_list
-        self.host = redis_host
-        self.port = redis_port
-        self.connection = None
+        self.client = None
 
     def connect(self):
         """
         Makes a redis connection
         """
-        if self.connection == None:
-            try:
-                r = redis.Redis(host=self.host, port=self.port)
-                r.ping()
-            except redis.exceptions.ConnectionError as err:
-                logging.error(f"[{datetime.now()}] Redis server cant be reached.")
-            return r
-
-        return self.connection
+        _r = RedisConn(host=REDIS_HOST, port=REDIS_PORT)
+        _r.client_initialisation()
+        self.client = _r.client
+        return self.client
 
     def retrieve(self):
         """

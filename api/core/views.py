@@ -1,21 +1,28 @@
+from django.conf import settings
+from django.http import HttpResponse
 from django.shortcuts import render
-from core.serializers import booking_serializer
 from django.views import View
-import redis
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
-from django.http import HttpResponse
 from marshmallow import ValidationError
+from redis.exceptions import ConnectionError
+from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework import status
+
+from core.serializers import booking_serializer
+from core.utils.connection import RedisConn
 
 
 @method_decorator(csrf_exempt, name="dispatch")
 class BaseWriteBufferView(APIView):
+    """
+    Base write buffer view to be inherited.
+    """
+
     redis_list = ""
     serializer = None
-    r = redis.Redis()
+    r_conn = RedisConn(host=settings.REDIS_HOST, port=settings.REDIS_PORT)
     authentication_classes = []
 
     def post(self, request):
@@ -27,7 +34,13 @@ class BaseWriteBufferView(APIView):
                 data={"error_message": str(err.messages)},
             )
 
-        self.r.rpush(self.redis_list, str(request.data))
+        try:
+            self.r_conn.client_initialisation()
+            r = self.r_conn.client
+            r.rpush(self.redis_list, str(request.data))
+        except ConnectionError:
+            return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
         return Response(status=status.HTTP_200_OK)
 
 

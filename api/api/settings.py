@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -95,7 +96,7 @@ DATABASES = {
         "NAME": "locale_task",
         "USER": "locale_test",
         "PASSWORD": "locale-test",
-        "HOST": "127.0.0.1",
+        "HOST": os.environ.get("DB_HOST", "127.0.0.1"),
         "PORT": 5432,
     }
 }
@@ -135,3 +136,7 @@ STATIC_URL = "/static/"
 
 # Custom read buffer settings
 READ_BUFFER = 500
+
+# Redis Settings
+REDIS_HOST = os.environ.get("REDIS_HOST", "127.0.0.1")
+REDIS_PORT = os.environ.get("REDIS_PORT", 6379)

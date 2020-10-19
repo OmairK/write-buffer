@@ -1,7 +1,8 @@
 #!/bin/bash
 
-# Start Celery Workers
-celery worker --workdir /app --app dri -l info &> /log/celery.log  &
-
+cd scheduler
 # Start Celery Beat
-celery -A tasks beat info --beat &> /log/celery_beat.log  &
+celery -A tasks beat info --beat &> /log/celery_beat.log&
+
+# Start Celery Workers
+celery -A tasks worker --loglevel=DEBUG

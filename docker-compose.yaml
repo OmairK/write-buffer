@@ -4,13 +4,13 @@ services:
     db:
         image: postgres:12.0-alpine
         environment:
-            - POSTGRES_USER=postgres
-            - POSTGRES_PASSWORD=postgres
-            - POSTGRES_DB=atlan_task
+            - POSTGRES_USER=locale_test
+            - POSTGRES_PASSWORD=locale-test
+            - POSTGRES_DB=locale_task
 
     web:
         build: ./api
-        command: bash -c "python manage.py migrate && python manage.py loaddata ./fixtures/customer.json && python manage.py runserver 0.0.0.0:8000"
+        command: bash -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
         ports:
             - "8000:8000"
         depends_on:
@@ -18,12 +18,12 @@ services:
             - redis
 
     redis:
-        image: redis:alpine
+        build: ./misc/redis
         ports:
             - "6379:6379"
 
+
     celery:
-        build: ./api
-        command: celery worker -A api.celery -c 4 -l INFO
+        build: ./misc/celery
         depends_on:
-            - web
+            - redis
