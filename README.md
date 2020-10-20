@@ -21,3 +21,14 @@ This API will be tested at peak times of the day when there are write requests i
 
 	To avoid vendor lockins and easy migrations I wanted to use in house solutions rather than relying too much on the vendor specific features and systems, hence this architecture could be easily implemented via different cloud vendors.
     ![image info](./misc/arch.png)
+
+
+### Settings up
+
+* Pre-requisites
+	* docker-compose
+
+```
+docker-compose build
+docker-compose up
+```
