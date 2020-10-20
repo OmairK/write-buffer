@@ -22,6 +22,7 @@ class BaseWriteBufferView(APIView):
 
     redis_list = ""
     serializer = None
+    primary_key = None
     r_conn = RedisConn(host=settings.REDIS_HOST, port=settings.REDIS_PORT)
     authentication_classes = []
 
@@ -41,9 +42,13 @@ class BaseWriteBufferView(APIView):
         except ConnectionError:
             return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-        return Response(status=status.HTTP_200_OK)
+        return Response(
+            status=status.HTTP_200_OK,
+            data={f"{self.primary_key}": data[f"{self.primary_key}"]},
+        )
 
 
 class BookingView(BaseWriteBufferView):
     redis_list = "XRider:Bookings"
     serializer = booking_serializer
+    primary_key = "booking_id"

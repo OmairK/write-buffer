@@ -32,3 +32,14 @@ This API will be tested at peak times of the day when there are write requests i
 docker-compose build
 docker-compose up
 ```
+
+* Endpoint Open API spec
+[Redoc link](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/OmairK/locale-task/master/misc/openapi/v1.yaml)
+
+* Benchmarking
+After running the docker container a benchmark test can be carried out via
+
+```
+cd misc/test-data
+python benchmark.py
+```
